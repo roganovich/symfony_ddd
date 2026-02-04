@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Shop\Infrastructure\Repository;
 
 use App\Shop\Domain\Entity\Shop;
+use App\Shop\Domain\Exception\ShopNotFoundException;
 use App\Shop\Domain\Repository\ShopRepositoryInterface;
 use App\Shop\Presentation\Mapper\ShopMapperInterface;
 use Symfony\Component\DependencyInjection\Attribute\AsAlias;
@@ -52,9 +53,13 @@ class ShopRepository implements ShopRepositoryInterface
 
     public function findById(string $id): Shop
     {
-        $row = array_filter(self::ITEMS, fn ($item) => $item['id'] === $id);
+        $row = array_filter(self::ITEMS, fn($item) => $item['id'] === $id);
 
-        return $this->shopMapper->toDomain(array_pop($row));
+        if (empty($row)) {
+            throw new ShopNotFoundException();
+        }
+
+        return $this->shopMapper->toDomain(reset($row));
     }
 
     public function findAll(): array

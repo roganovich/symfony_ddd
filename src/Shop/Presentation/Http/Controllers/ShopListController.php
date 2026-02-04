@@ -44,7 +44,6 @@ final class ShopListController extends AbstractController
         }
         // Создаем и выполняем Query
         $query = new FilterShopListsQuery($request->search, $request->page, $request->limit);
-
         $result = $handler->execute($query);
 
         $data = ShopResponse::formatList($result->items);

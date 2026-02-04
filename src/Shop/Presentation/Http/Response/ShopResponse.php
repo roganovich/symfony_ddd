@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Shop\Presentation\Response;
+namespace App\Shop\Presentation\Http\Response;
 
 use App\Shop\Domain\Entity\Shop;
 use JsonSerializable;
 
-class ShopResponse implements ResponseInterface, JsonSerializable
+class ShopResponse implements JsonSerializable
 {
     public function __construct(
         private ?Shop $shop,
@@ -44,7 +44,7 @@ class ShopResponse implements ResponseInterface, JsonSerializable
         return $this->shop->getCreatedAt()->format('d.m.Y');
     }
 
-    public function toArray(): array
+    public function jsonSerialize(): array
     {
         return [
             'id' => $this->getId(),
@@ -52,10 +52,5 @@ class ShopResponse implements ResponseInterface, JsonSerializable
             'address' => $this->getAddress(),
             'date' => $this->getDate(),
         ];
-    }
-
-    public function jsonSerialize(): array
-    {
-        return $this->toArray();
     }
 }

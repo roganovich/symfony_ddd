@@ -7,7 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Shop\Domain\Service\ShopServiceInterface;
-use App\Shop\Presentation\Response\ShopResponse;
+use App\Shop\Presentation\Http\Response\ShopResponse;
 use App\Shop\Domain\Entity\Shop;
 
 final class ShopViewController extends AbstractController
@@ -17,7 +17,7 @@ final class ShopViewController extends AbstractController
     ) {
     }
 
-    #[Route('/api/shop/{id}', name: 'view', methods: ["GET"])]
+    #[Route('/api/shop/{id}', name: 'api_shop_view', methods: ["GET"])]
     public function __invoke(string $id): JsonResponse
     {
         /**

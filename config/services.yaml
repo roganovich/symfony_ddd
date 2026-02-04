@@ -18,3 +18,24 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # Конфигурация в инфраструктурном слое
+    App\Shop\Application\Service\ShopServiceInterface:
+        class: App\Shop\Application\Service\ShopService
+        public: true
+
+    App\Shop\Application\Mapper\CreateShopMapperInterface:
+        class: App\Shop\Infrastructure\Mapper\CreateShopMapper
+        public: true
+
+    App\Shop\Presentation\Mapper\ShopMapperInterface:
+        class: App\Shop\Infrastructure\Mapper\ShopMapper
+        public: true
+
+    App\Shop\Domain\Repository\ShopRepositoryInterface:
+        class: App\Shop\Infrastructure\Repository\ShopRepository
+        public: true
+
+    App\Shop\Domain\Service\UuidGeneratorInterface:
+        class: App\Shop\Infrastructure\Service\SymfonyUuidGenerator
+        public: true

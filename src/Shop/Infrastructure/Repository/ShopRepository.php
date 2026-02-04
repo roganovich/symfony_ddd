@@ -8,9 +8,7 @@ use App\Shop\Domain\Entity\Shop;
 use App\Shop\Domain\Exception\ShopNotFoundException;
 use App\Shop\Domain\Repository\ShopRepositoryInterface;
 use App\Shop\Presentation\Mapper\ShopMapperInterface;
-use Symfony\Component\DependencyInjection\Attribute\AsAlias;
 
-#[AsAlias(ShopRepositoryInterface::class)]
 class ShopRepository implements ShopRepositoryInterface
 {
     const ITEMS = [
@@ -69,5 +67,13 @@ class ShopRepository implements ShopRepositoryInterface
             $shops[] = $this->shopMapper->toDomain($row);
         }
         return $shops;
+    }
+
+    public function create(Shop $shop): Shop
+    {
+        /**
+         * TODO 
+         */
+        return $shop;
     }
 }

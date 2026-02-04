@@ -12,18 +12,15 @@ use App\Shop\Domain\Entity\Shop;
 
 final class ShopViewController extends AbstractController
 {
-    public function __construct(
-        private readonly ShopServiceInterface $shopService,
-    ) {
-    }
-
     #[Route('/api/shop/{id}', name: 'api_shop_view', methods: ["GET"])]
-    public function __invoke(string $id): JsonResponse
-    {
+    public function __invoke(
+        string $id,
+        ShopServiceInterface $shopService
+    ): JsonResponse {
         /**
          * @var Shop $shop
          */
-        $shop = $this->shopService->findById($id);
+        $shop = $shopService->findById($id);
         $response = ShopResponse::format($shop);
 
         return $this->json($response);

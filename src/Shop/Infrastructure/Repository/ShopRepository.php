@@ -8,6 +8,7 @@ use App\Shop\Domain\Entity\Shop;
 use App\Shop\Domain\Exception\ShopNotFoundException;
 use App\Shop\Domain\Repository\ShopRepositoryInterface;
 use App\Shop\Presentation\Mapper\ShopMapperInterface;
+use App\Shared\Application\Query\FilterQueryInterface;
 
 class ShopRepository implements ShopRepositoryInterface
 {
@@ -75,5 +76,25 @@ class ShopRepository implements ShopRepositoryInterface
          * TODO 
          */
         return $shop;
+    }
+
+    public function findWithPagination(FilterQueryInterface $query): array
+    {
+        $search = $query->getSearch();
+        if ($search === null) {
+            return self::ITEMS;
+        }
+
+        $shops = array_filter(self::ITEMS, fn($item) =>
+            str_contains($item['name'], $search) ||
+            str_contains($item['address'], $search)
+        );
+
+        $result = [];
+        foreach ($shops as $row) {
+            $result[] = $this->shopMapper->toDomain($row);
+        }
+
+        return $result;
     }
 }

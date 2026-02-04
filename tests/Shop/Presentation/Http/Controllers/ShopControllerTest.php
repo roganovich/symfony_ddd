@@ -18,7 +18,13 @@ class ShopControllerTest extends BaseWebTestCase
     public function testListAction(): void
     {
         $client = static::createClient();
-        $client->request('GET', self::SHOP_LIST);
+        $query = http_build_query([
+            'search' => 'магазин',
+            'page' => 1,
+            'limit' => 10
+        ]);
+
+        $client->request('GET', self::SHOP_LIST . '?' . $query);
         $response = $client->getResponse();
 
         $this->assertSame(200, $response->getStatusCode());

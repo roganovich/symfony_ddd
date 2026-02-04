@@ -1,0 +1,38 @@
+services:
+  # PHP-FPM Service
+  myapp_php:
+    build:
+      context: ./docker/php
+      dockerfile: Dockerfile
+    container_name: myapp_php
+    restart: unless-stopped
+    working_dir: /var/www/html
+    env_file:
+      - .env.local
+    volumes:
+      - ./:/var/www/html
+      - ./node_modules:/var/www/node_modules
+      - ./docker/php/php.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      - APP_ENV=${APP_ENV}
+      - APP_SECRET=${APP_SECRET}
+    networks:
+      - symfony_network
+  # Nginx Service
+  myapp_nginx:
+    image: nginx:alpine
+    container_name: myapp_nginx
+    restart: unless-stopped
+    ports:
+      - "${NGINX_PORT:-8080}:80"
+    volumes:
+      - ./:/var/www/html
+      - ./docker/nginx/conf.d/default.conf:/etc/nginx/conf.d/default.conf
+    networks:
+      - symfony_network
+    depends_on:
+      - myapp_php
+
+networks:
+  symfony_network:
+    driver: bridge
